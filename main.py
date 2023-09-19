@@ -3,7 +3,6 @@ import requests
 import time
 from cloud_providers.aws_regions import REGIONS
 from restricts import aws_is_valid_bucket_name
-import itertools
 
 CONNECTIONS = 100
 TIMEOUT = 5
@@ -16,15 +15,10 @@ def get_user_input():
         else:
             print("Invalid input. Please enter a valid bucket name.")
 
-def generate_bucket_name_variations(bucket_name):
-    allowed_characters = "abcdefghijklmnopqrstuvwxyz0123456789.-"
-    character_variations = itertools.product(allowed_characters, repeat=len(bucket_name))
-    variations = [''.join(chars) for chars in character_variations]
-    return variations
 
 def fetch_web_pages(bucket_name, timeout):
-    variations = generate_bucket_name_variations(bucket_name)
-    urls = [f'https://{variation}.s3.{region}.amazonaws.com' or f'https://{variation}.s3-{region}.amazonaws.com' for region in REGIONS for variation in variations]
+    urls = [f'https://{bucket_name}.s3.{region}.amazonaws.com' or f'https://{bucket_name}.s3-{region}.amazonaws.com' for region in REGIONS]
+
 
     def check_url(url):
         try:
