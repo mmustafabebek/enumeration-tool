@@ -2,16 +2,23 @@ import concurrent.futures
 import requests
 import time
 from cloud_providers.aws_regions import REGIONS
+from restricts import aws_is_valid_bucket_name
 
-CONNECTIONS = 100000
+CONNECTIONS = 100
 TIMEOUT = 5
 
 def get_user_input():
-    user_input = input("Please enter a bucket name: ")
-    return user_input.strip()
+    while True:
+        user_input = input("Please enter a bucket name: ")
+        if aws_is_valid_bucket_name(user_input):
+            return user_input.strip()
+        else:
+            print("Invalid input. Please enter a valid bucket name.")
+
 
 def fetch_web_pages(bucket_name, timeout):
     urls = [f'https://{bucket_name}.s3.{region}.amazonaws.com' or f'https://{bucket_name}.s3-{region}.amazonaws.com' for region in REGIONS]
+
 
     def check_url(url):
         try:
