@@ -10,7 +10,6 @@ def azure_is_valid_blob_name(blob_name):
         if re.match(pattern, blob_name):
             return True
         else:
-            print("Invalid Blob name.")
             return False
 
 def gcp_is_valid_storage_name(bucket_name):
@@ -19,5 +18,4 @@ def gcp_is_valid_storage_name(bucket_name):
     if re.match(pattern, bucket_name):
         return True
     else:
-        print("Invalid Google Cloud Storage name.")
         return False
