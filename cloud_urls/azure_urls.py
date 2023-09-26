@@ -6,6 +6,8 @@ def check_azure_urls(bucket_name, timeout):
         response = requests.head(azure_blob_url, timeout=timeout)
         if response.status_code == 200:
             return [azure_blob_url], []
+        elif response.status_code == 403:
+            print("There is such a blob bucket ({azure_blob_url}), but we cannot access it because it is private.")
         else:
             return [], [azure_blob_url]
     except requests.RequestException:
