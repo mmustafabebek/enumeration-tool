@@ -5,12 +5,18 @@ from restricts import aws_is_valid_bucket_name, azure_is_valid_blob_name, gcp_is
 from cloud_urls.aws_urls import check_aws_urls
 from cloud_urls.azure_urls import check_azure_urls
 from cloud_urls.gcp_urls import check_gcp_urls
+from arg_handler import parse_args
 
 CONNECTIONS = 100
 TIMEOUT = 5
 
 
 def get_user_input():
+    args = parse_args()
+
+    name = args.name
+    keyword = args.keyword
+
     while True:
         user_input = input("Please enter a name: ")
         user_input = user_input.strip()
