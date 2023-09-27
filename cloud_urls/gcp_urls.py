@@ -1,4 +1,5 @@
 import requests
+from colorama import Fore, Style
 
 def check_gcp_urls(bucket_name, timeout):
     google_storage_url = f'https://{bucket_name}.storage.googleapis.com'
@@ -7,8 +8,9 @@ def check_gcp_urls(bucket_name, timeout):
         if response.status_code == 200:
             return [google_storage_url], []
         elif response.status_code == 403:
-            print(f"There is such a google storage ({google_storage_url}), but we cannot access it because it is private.")
-            return [], [google_storage_url]  # 403 hatası durumunda boş liste döndürün
+            print(Fore.RED + f"There is such a google storage ({google_storage_url}), but we cannot access it because it is private." + Style.RESET_ALL)
+            print("")
+            return [], [google_storage_url]
         else:
             return [], [google_storage_url]
     except requests.RequestException:

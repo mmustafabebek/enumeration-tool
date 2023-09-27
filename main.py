@@ -6,6 +6,7 @@ from cloud_urls.aws_urls import check_aws_urls
 from cloud_urls.azure_urls import check_azure_urls
 from cloud_urls.gcp_urls import check_gcp_urls
 from arg_handler import parse_args
+from colorama import Fore, Style
 
 CONNECTIONS = 100
 TIMEOUT = 5
@@ -13,7 +14,6 @@ TIMEOUT = 5
 
 def get_user_input():
     args = parse_args()
-
     name = args.name
     keyword = args.keyword
 
@@ -35,14 +35,22 @@ def get_user_input():
         invalid_providers = [provider for provider, is_valid in results.items() if not is_valid]
 
         if valid_providers:
-            print(f"Valid input for: {', '.join(valid_providers)}")
+            print("")
+            print(Fore.BLUE + "*********************************************************************" + Style.RESET_ALL)
+            print(Fore.BLUE + "ENUMERATION TOOL" + Style.RESET_ALL)
+            print(Fore.BLUE + "*********************************************************************" + Style.RESET_ALL)
+            print("")
+            print(Fore.YELLOW + "Scanning..." + Style.RESET_ALL)
+            print("")
+            print(Fore.GREEN + f"Valid input for: {', '.join(valid_providers)}" + Style.RESET_ALL)
+            print("")
         if invalid_providers:
-            print(f"Invalid input for: {', '.join(invalid_providers)}")
+            print(Fore.RED + f"Invalid input for: {', '.join(invalid_providers)}" + Style.RESET_ALL)
 
         if valid_providers:
             return user_input, valid_providers
         else:
-            print("Invalid input. Please enter a valid name for AWS, Azure, or GCP.")
+            print(Fore.RED + "Invalid input. Please enter a valid name for AWS, Azure, or GCP." + Style.RESET_ALL)
 
 
 def fetch_web_pages(provider, name, timeout):
@@ -66,11 +74,11 @@ def fetch_web_pages(provider, name, timeout):
 
         time2 = time.time()
 
-    print(f'{provider} Accessible URLs ({len(accessible_urls[provider])}):')
+    print(Fore.BLUE + f'{provider} Accessible URLs ({len(accessible_urls[provider])}):' + Style.RESET_ALL)
     for url in accessible_urls[provider]:
         print(f'   {url}')
 
-    print(f'{provider} Inaccessible URLs ({len(inaccessible_urls[provider])}):')
+    print(Fore.BLUE + f'{provider} Inaccessible URLs ({len(inaccessible_urls[provider])}):' + Style.RESET_ALL)
     for url in inaccessible_urls[provider]:
         print(f'   {url}')
 

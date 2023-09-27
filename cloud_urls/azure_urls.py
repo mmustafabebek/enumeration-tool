@@ -1,4 +1,5 @@
 import requests
+from colorama import Fore, Style
 
 def check_azure_urls(bucket_name, timeout):
     azure_blob_url = f'https://{bucket_name}.blob.core.windows.net'
@@ -7,7 +8,8 @@ def check_azure_urls(bucket_name, timeout):
         if response.status_code == 200:
             return [azure_blob_url], []
         elif response.status_code == 403:
-            print("There is such a blob bucket ({azure_blob_url}), but we cannot access it because it is private.")
+            print(Fore.RED + "There is such a blob bucket ({azure_blob_url}), but we cannot access it because it is private." + Style.RESET_ALL)
+            print("")
         else:
             return [], [azure_blob_url]
     except requests.RequestException:
