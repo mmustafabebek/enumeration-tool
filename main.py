@@ -17,40 +17,37 @@ def get_user_input():
     name = args.name
     keyword = args.keyword
 
-    while True:
-        user_input = input("Please enter a name: ")
-        user_input = user_input.strip()
+    is_aws_valid = aws_is_valid_bucket_name(name)
+    is_azure_valid = azure_is_valid_blob_name(name)
+    is_gcp_valid = gcp_is_valid_storage_name(name)
 
-        is_aws_valid = aws_is_valid_bucket_name(user_input)
-        is_azure_valid = azure_is_valid_blob_name(user_input)
-        is_gcp_valid = gcp_is_valid_storage_name(user_input)
+    results = {
+        "AWS": is_aws_valid,
+        "Azure": is_azure_valid,
+        "GCP": is_gcp_valid
+    }
 
-        results = {
-            "AWS": is_aws_valid,
-            "Azure": is_azure_valid,
-            "GCP": is_gcp_valid
-        }
+    valid_providers = [provider for provider, is_valid in results.items() if is_valid]
+    invalid_providers = [provider for provider, is_valid in results.items() if not is_valid]
 
-        valid_providers = [provider for provider, is_valid in results.items() if is_valid]
-        invalid_providers = [provider for provider, is_valid in results.items() if not is_valid]
-
-        if valid_providers:
-            print("")
-            print(Fore.BLUE + "*********************************************************************" + Style.RESET_ALL)
-            print(Fore.BLUE + "ENUMERATION TOOL" + Style.RESET_ALL)
-            print(Fore.BLUE + "*********************************************************************" + Style.RESET_ALL)
-            print("")
-            print(Fore.YELLOW + "Scanning..." + Style.RESET_ALL)
-            print("")
-            print(Fore.GREEN + f"Valid input for: {', '.join(valid_providers)}" + Style.RESET_ALL)
-            print("")
-        if invalid_providers:
-            print(Fore.RED + f"Invalid input for: {', '.join(invalid_providers)}" + Style.RESET_ALL)
-
-        if valid_providers:
-            return user_input, valid_providers
-        else:
-            print(Fore.RED + "Invalid input. Please enter a valid name for AWS, Azure, or GCP." + Style.RESET_ALL)
+    if valid_providers:
+        print("")
+        print(Fore.BLUE + "*********************************************************************" + Style.RESET_ALL)
+        print(Fore.BLUE + "ENUMERATION TOOL" + Style.RESET_ALL)
+        print(Fore.BLUE + "*********************************************************************" + Style.RESET_ALL)
+        print("")
+        print(Fore.YELLOW + "Scanning..." + Style.RESET_ALL)
+        print("")
+        print(Fore.GREEN + f"Valid input for: {', '.join(valid_providers)}" + Style.RESET_ALL)
+        print("")
+    if invalid_providers:
+        print(Fore.RED + f"Invalid input for: {', '.join(invalid_providers)}" + Style.RESET_ALL)
+        print("")
+    if valid_providers:
+        return name, valid_providers
+    else:
+        print(Fore.RED + "Invalid input. Please enter a valid name for AWS, Azure, or GCP." + Style.RESET_ALL)
+        exit(1)
 
 
 def fetch_web_pages(provider, name, timeout):
