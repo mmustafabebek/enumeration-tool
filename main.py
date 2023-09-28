@@ -8,15 +8,18 @@ from cloud_urls.gcp_urls import check_gcp_urls
 from arg_handler import parse_args
 from colorama import Fore, Style
 
+# Maximum number of concurrent connections
 CONNECTIONS = 100
+# Timeout duration (in seconds) for checking web pages
 TIMEOUT = 5
 
-
+# Function to obtain user input
 def get_user_input():
     args = parse_args()
     name = args.name
     keyword = args.keyword
 
+    # Check if the provided name is valid for AWS, Azure, and GCP
     is_aws_valid = aws_is_valid_bucket_name(name)
     is_azure_valid = azure_is_valid_blob_name(name)
     is_gcp_valid = gcp_is_valid_storage_name(name)
@@ -49,7 +52,7 @@ def get_user_input():
         print(Fore.RED + "Invalid input. Please enter a valid name for AWS, Azure, or GCP." + Style.RESET_ALL)
         exit(1)
 
-
+# Function to fetch web pages in parallel
 def fetch_web_pages(provider, name, timeout):
     with concurrent.futures.ThreadPoolExecutor(max_workers=CONNECTIONS) as executor:
         time1 = time.time()
@@ -81,7 +84,7 @@ def fetch_web_pages(provider, name, timeout):
 
     return time2 - time1
 
-
+# Main program
 if __name__ == '__main__':
     name, providers = get_user_input()
     if name:
