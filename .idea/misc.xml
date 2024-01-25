@@ -2,7 +2,6 @@
 <project version="4">
   <component name="Black">
     <option name="pathToExecutable" value="C:\Users\mmust\anaconda3\Scripts\black.exe" />
-    <option name="sdkUUID" value="102475df-22b5-4ec0-b1d0-eb29687888d1" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12" project-jdk-type="Python SDK" />
 </project>
